@@ -63,26 +63,25 @@ func userInput() (string, string, float64) {
 	return valueFrom, valueTo, value
 }
 
-func calculateValue(valueFrom string, valueTo string, value float64) {
-	const USDtoEUR = 0.87
-	const USDtoRUB = 80.05
+type currencyType = map[string]float64
 
-	switch {
-	case valueFrom == USD && valueTo == RUB:
-		fmt.Printf("Перевод из %s в %s - %.2f", valueFrom, valueTo, value * USDtoRUB)
-	case valueFrom == RUB && valueTo == USD:
-		fmt.Printf("Перевод из %s в %s - %.2f", valueFrom, valueTo, value / USDtoRUB)
-	case valueFrom == USD && valueTo == EUR:
-		fmt.Printf("Перевод из %s в %s - %.2f", valueFrom, valueTo, value * USDtoEUR)
-	case valueFrom == EUR && valueTo == USD:
-		fmt.Printf("Перевод из %s в %s - %.2f", valueFrom, valueTo, value / USDtoEUR)
-	case valueFrom == EUR && valueTo == RUB:
-		fmt.Printf("Перевод из %s в %s - %.2f", valueFrom, valueTo, value / USDtoEUR * USDtoRUB)
-	case valueFrom == RUB && valueTo == EUR:
-		fmt.Printf("Перевод из %s в %s - %.2f", valueFrom, valueTo, value * USDtoEUR / USDtoRUB)
-	default:
-		fmt.Printf("Перевода из %s в %s не найдено", valueFrom, valueTo)
+func calculateValue(valueFrom string, valueTo string, value float64) {
+	currency := map[string]currencyType{
+		"RUB": {
+			"USD": 0.013,
+			"EUR": 0.011,
+		},
+		"EUR": {
+			"USD": 1.16,
+			"RUB": 90.14,
+		},
+		"USD": {
+			"EUR": 0.86,
+			"RUB": 77.72,
+		},
 	}
+
+	fmt.Printf("Перевод из %s в %s - %.2f", valueFrom, valueTo, value * currency[valueFrom][valueTo])
 }
 
 func main(){
