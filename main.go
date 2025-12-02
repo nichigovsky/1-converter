@@ -65,7 +65,14 @@ func userInput() (string, string, float64) {
 
 type currencyType = map[string]float64
 
-func calculateValue(valueFrom string, valueTo string, value float64) {
+func calculateValue(valueFrom string, valueTo string, value float64, currency *map[string]currencyType) {
+	cur := *currency
+
+	fmt.Printf("Перевод из %s в %s - %.2f", valueFrom, valueTo, value * cur[valueFrom][valueTo])
+}
+
+func main(){
+	var continueMsg string
 	currency := map[string]currencyType{
 		"RUB": {
 			"USD": 0.013,
@@ -81,15 +88,10 @@ func calculateValue(valueFrom string, valueTo string, value float64) {
 		},
 	}
 
-	fmt.Printf("Перевод из %s в %s - %.2f", valueFrom, valueTo, value * currency[valueFrom][valueTo])
-}
-
-func main(){
-	var continueMsg string
 	fmt.Println("__Конвертер валют__")
 	for {
 		valueFrom, valueTo, value := userInput();
-		calculateValue(valueFrom, valueTo, value)
+		calculateValue(valueFrom, valueTo, value, &currency)
 		fmt.Print("\nПродолжить? да/нет - ")
 		fmt.Scan(&continueMsg)
 
